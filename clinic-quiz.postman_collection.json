@@ -1,1 +1,92 @@
-{ "info": { "name": "clinic-quiz", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" }, "item": [] } 
+{
+  "info": {
+    "name": "clinic-quiz",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "A1 GET patients by lastName Uwase",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/patients/by-last-name?lastName=Uwase"
+      }
+    },
+    {
+      "name": "A2 GET appointments by status",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/appointments/by-status?status=SCHEDULED"
+      }
+    },
+    {
+      "name": "A3 GET doctors by office number",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/doctors/by-office?number=101"
+      }
+    },
+    {
+      "name": "A4 GET appointments by doctor and month",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/appointments/by-doctor-and-month?doctorId=1&month=10&year=2026"
+      }
+    },
+    {
+      "name": "B1 GET doctors by specialization",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/doctors/by-specialization?name=cardiology"
+      }
+    },
+    {
+      "name": "B2 GET doctors without office",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/doctors/without-office"
+      }
+    },
+    {
+      "name": "B3 GET unused specializations",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/specializations/unused"
+      }
+    },
+    {
+      "name": "B4 GET patients by doctor specialization",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/patients/by-doctor-specialization?specialization=Cardiology"
+      }
+    },
+    {
+      "name": "C1 GET counts by status",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/appointments/counts-by-status"
+      }
+    },
+    {
+      "name": "C2 GET patients many appointments",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/patients/many-appointments?min=3"
+      }
+    },
+    {
+      "name": "C3 GET doctor appointment counts",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/doctors/appointment-counts"
+      }
+    },
+    {
+      "name": "C4 PUT cancel past appointments",
+      "request": {
+        "method": "PUT",
+        "url": "http://localhost:8080/api/appointments/cancel-past?cutoff=2026-10-30"
+      }
+    }
+  ]
+}
