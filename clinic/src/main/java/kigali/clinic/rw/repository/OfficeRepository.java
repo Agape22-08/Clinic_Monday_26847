@@ -11,13 +11,10 @@ import org.springframework.stereotype.Repository;
 import kigali.clinic.rw.domain.Office;
 
 @Repository 
-public interface OfficeRepository extends JpaRepository<Office,UUID> {
+public interface OfficeRepository extends JpaRepository<Office, UUID> {
+    Optional<Office> findByOfficeNumber(int officeNumber);
+    boolean existsByOfficeNumber(int officeNumber);
     
-    List<Office> findByName(String name);
-    Optional<Office> findByOfficeNumber(int officeN);
-
-    List<Office> findByOfficeNumberStartsWith(int startNumber);
-
-  
-    List<Office> findByOfficeNumberEndsWith(int endNumber);
+        @Query("SELECT o FROM Office o WHERE NOT EXISTS (SELECT d FROM Doctor d WHERE d.office = o) ORDER BY o.officeNumber ASC")
+    List<Office> findFreeOffices();
 }

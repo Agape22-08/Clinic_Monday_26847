@@ -8,11 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kigali.clinic.rw.domain.Doctor;
@@ -77,5 +79,41 @@ public class DoctorController {
         } else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PutMapping("/{doctorId}/specializations/{specializationId}")
+    public ResponseEntity<String> addSpecialization(@PathVariable UUID doctorId, @PathVariable UUID specializationId) {
+        String msg = doctorServe.addSpecializationToDoctor(doctorId, specializationId);
+        if (msg.equals("The doctor with that id does not exist") || msg.equals("That specialization does not exist")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+        }
+        if (msg.equals("The doctor already has that specialization")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(msg);
+        }
+        return ResponseEntity.ok(msg);
+    }
+
+    @DeleteMapping("/{doctorId}/specializations/{specializationId}")
+    public ResponseEntity<String> removeSpecialization(@PathVariable UUID doctorId, @PathVariable UUID specializationId) {
+        String msg = doctorServe.removeSpecializationFromDoctor(doctorId, specializationId);
+        if (msg.equals("The doctor with that id does not exist") || msg.equals("That specialization does not exist")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+        }
+        if (msg.equals("The doctor does not have that specialization")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(msg);
+        }
+        return ResponseEntity.ok(msg);
+    }
+
+    @PatchMapping("/{doctorId}/office")
+    public ResponseEntity<String> moveOffice(@PathVariable UUID doctorId, @RequestParam int officeNumber) {
+        String msg = doctorServe.moveDoctorToOffice(doctorId, officeNumber);
+        if (msg.equals("The doctor with that id does not exist") || msg.equals("The office with that office number does not exist")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+        }
+        if (msg.equals("That office is taken by other doctor")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(msg);
+        }
+        return ResponseEntity.ok(msg);
     }
 }

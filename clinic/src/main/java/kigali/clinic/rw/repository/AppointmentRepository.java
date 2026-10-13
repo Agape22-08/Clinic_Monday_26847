@@ -32,6 +32,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             Date appointmentDate,
             AppointmentStatus status
     );
+    List<Appointment> findByDoctorIdAndAppointmentDateAndStatusNot(UUID doctorId, Date date, AppointmentStatus status);
+    long countByAppointmentDate(Date date);
+    long countByStatus(AppointmentStatus status);
 
    
     @Query("""
@@ -82,6 +85,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     List<kigali.clinic.rw.domain.Patient> findFrequentPatients(
             @Param("min") long min
     );
+    List<Appointment> findByPatientSocialSecurityNumberAndAppointmentDateGreaterThanEqualAndStatusInOrderByAppointmentDateAsc(String ss, Date today, List<AppointmentStatus> statuses);
 
    
     @Query("""

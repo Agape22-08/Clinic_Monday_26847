@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kigali.clinic.rw.domain.Office;
 import kigali.clinic.rw.service.OfficeService;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -32,7 +34,11 @@ public class OfficeController {
        }else{
         return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
        }
+    }
 
+    @GetMapping(value = "/free")
+    public ResponseEntity<?> freeOffices() {
+        return new ResponseEntity<>(offServe.getAllOffices(), HttpStatus.OK);
     }
 
     @org.springframework.web.bind.annotation.GetMapping(value = "/all")

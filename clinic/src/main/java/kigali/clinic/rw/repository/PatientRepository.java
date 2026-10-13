@@ -12,4 +12,6 @@ import kigali.clinic.rw.domain.Patient;
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
     List<Patient> findByLastNameIgnoreCaseOrderByFirstNameAsc(String lastName);
+
+    boolean existsBySocialSecurityNumber(String socialSecurityNumber);
 }
