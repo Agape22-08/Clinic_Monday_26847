@@ -1,0 +1,325 @@
+{
+  "info": {
+    "name": "Quiz 2 - Clinic API",
+    "_postman_id": "quiz2-clinic-api-2026",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "A - DOCTORS & OFFICES",
+      "item": [
+        {
+          "name": "A1 - Add Specialization to Doctor",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/doctors/PASTE_DOCTOR_ID_HERE/specializations/PASTE_SPECIALIZATION_ID_HERE",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","doctors","PASTE_DOCTOR_ID_HERE","specializations","PASTE_SPECIALIZATION_ID_HERE"]
+            }
+          }
+        },
+        {
+          "name": "A2 - Remove Specialization from Doctor",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/doctors/PASTE_DOCTOR_ID_HERE/specializations/PASTE_SPECIALIZATION_ID_HERE",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","doctors","PASTE_DOCTOR_ID_HERE","specializations","PASTE_SPECIALIZATION_ID_HERE"]
+            }
+          }
+        },
+        {
+          "name": "A3 - Get Free Offices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/office/free",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","office","free"]
+            }
+          }
+        },
+        {
+          "name": "A4 - Move Doctor to Office",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/doctors/PASTE_DOCTOR_ID_HERE/office?officeNumber=101",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","doctors","PASTE_DOCTOR_ID_HERE","office"],
+              "query": [{ "key": "officeNumber", "value": "101" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "B - APPOINTMENTS CRUD",
+      "item": [
+        {
+          "name": "B1 - Save New Appointment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8083/api/appointments/save",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","appointments","save"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentDate\": \"2025-12-01\",\n  \"doctor\": { \"id\": \"PASTE_DOCTOR_ID_HERE\" },\n  \"patient\": { \"id\": \"PASTE_PATIENT_ID_HERE\" }\n}"
+            }
+          }
+        },
+        {
+          "name": "B2 - Change Appointment Status (SCHEDULED to CONFIRMED)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/appointments/PASTE_APPOINTMENT_ID_HERE/status?status=CONFIRMED",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","appointments","PASTE_APPOINTMENT_ID_HERE","status"],
+              "query": [{ "key": "status", "value": "CONFIRMED" }]
+            }
+          }
+        },
+        {
+          "name": "B3 - Reschedule Appointment",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/appointments/PASTE_APPOINTMENT_ID_HERE/reschedule?newDate=2025-12-20",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","appointments","PASTE_APPOINTMENT_ID_HERE","reschedule"],
+              "query": [{ "key": "newDate", "value": "2025-12-20" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "C - PRESCRIPTIONS",
+      "item": [
+        {
+          "name": "C1 - Save Prescription",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8083/api/prescriptions/save?appointmentId=PASTE_APPOINTMENT_ID_HERE",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","prescriptions","save"],
+              "query": [{ "key": "appointmentId", "value": "PASTE_APPOINTMENT_ID_HERE" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicineName\": \"Aspirin\",\n  \"dosage\": \"500mg\",\n  \"instructions\": \"Take once daily after meal\"\n}"
+            }
+          }
+        },
+        {
+          "name": "C2 - Get Prescriptions by Appointment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/prescriptions/appointment/PASTE_APPOINTMENT_ID_HERE",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","prescriptions","appointment","PASTE_APPOINTMENT_ID_HERE"]
+            }
+          }
+        },
+        {
+          "name": "C3 - Get Prescriptions by Patient SSN",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/prescriptions/patient/SSN-001",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","prescriptions","patient","SSN-001"]
+            }
+          }
+        },
+        {
+          "name": "C4 - Update Prescription",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8083/api/prescriptions/update/PASTE_PRESCRIPTION_ID_HERE",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","prescriptions","update","PASTE_PRESCRIPTION_ID_HERE"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicineName\": \"Aspirin\",\n  \"dosage\": \"1000mg\",\n  \"instructions\": \"Take twice daily\"\n}"
+            }
+          }
+        },
+        {
+          "name": "C4 - Delete Prescription",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/prescriptions/delete/PASTE_PRESCRIPTION_ID_HERE",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","prescriptions","delete","PASTE_PRESCRIPTION_ID_HERE"]
+            }
+          }
+        },
+        {
+          "name": "C4 - Delete Appointment (checks prescriptions first)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/appointments/delete/PASTE_APPOINTMENT_ID_HERE",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","appointments","delete","PASTE_APPOINTMENT_ID_HERE"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "D - QUERIES",
+      "item": [
+        {
+          "name": "D1 - Get Doctor Agenda by Date",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/doctors/PASTE_DOCTOR_ID_HERE/agenda?date=2024-10-20",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","doctors","PASTE_DOCTOR_ID_HERE","agenda"],
+              "query": [{ "key": "date", "value": "2024-10-20" }]
+            }
+          }
+        },
+        {
+          "name": "D2 - Get Upcoming Appointments by Patient SSN",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/patients/SSN-001/upcoming",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","patients","SSN-001","upcoming"]
+            }
+          }
+        },
+        {
+          "name": "D3 - Search Doctors by Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/doctors/search?name=john",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","doctors","search"],
+              "query": [{ "key": "name", "value": "john" }]
+            }
+          }
+        },
+        {
+          "name": "D4 - Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/dashboard",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","dashboard"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "HELPER - Get All Data (for IDs)",
+      "item": [
+        {
+          "name": "Get All Doctors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/doctors/all",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","doctors","all"]
+            }
+          }
+        },
+        {
+          "name": "Get All Patients",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/patients/all",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","patients","all"]
+            }
+          }
+        },
+        {
+          "name": "Get All Appointments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/appointments/all",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","appointments","all"]
+            }
+          }
+        },
+        {
+          "name": "Get All Specializations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/specialization/all",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api","specialization","all"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

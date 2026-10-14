@@ -63,6 +63,11 @@ public class AppointmentController {
         return ResponseEntity.ok(msg);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll(){
+        return ResponseEntity.ok(appointmentService.getAllAppointments());
+    }
+
     // C4 - delete appointment with prescription check
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable UUID id){
