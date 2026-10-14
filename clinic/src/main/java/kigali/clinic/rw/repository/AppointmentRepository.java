@@ -21,32 +21,25 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
 
     List<Appointment> findByStatusOrderByAppointmentDateAsc(AppointmentStatus status);
 
-    List<Appointment> findByAppointmentDateBetweenOrderByAppointmentDateAsc(
-            Date start,
-            Date end
-    );
+    List<Appointment> findByAppointmentDateBetweenOrderByAppointmentDateAsc(Date start, Date end);
 
-
-    boolean existsByDoctorIdAndAppointmentDateAndStatusNot(
-            UUID doctorId,
-            Date appointmentDate,
-            AppointmentStatus status
-    );
+    // B3
+    boolean existsByDoctorIdAndAppointmentDateAndStatusNot(UUID doctorId, Date appointmentDate, AppointmentStatus status);
     List<Appointment> findByDoctorIdAndAppointmentDateAndStatusNot(UUID doctorId, Date date, AppointmentStatus status);
+
+    // D4
     long countByAppointmentDate(Date date);
     long countByStatus(AppointmentStatus status);
 
-   
-    @Query("""
-        SELECT d
-        FROM Doctor d
-        JOIN d.specializations s
-        WHERE LOWER(s.name) = LOWER(:name)
-        """)
-    List<kigali.clinic.rw.domain.Doctor> findDoctorsBySpecialization(
-            @Param("name") String name
-    );
+    // D1
+    List<Appointment> findByDoctorIdAndAppointmentDateAndStatusNotOrderByAppointmentDateAsc(UUID doctorId, Date date, AppointmentStatus status);
 
+    // D2
+    List<Appointment> findByPatientSocialSecurityNumberAndAppointmentDateGreaterThanEqualAndStatusInOrderByAppointmentDateAsc(String ss, Date today, List<AppointmentStatus> statuses);
+
+    // D3
+    @Query("SELECT d FROM Doctor d WHERE LOWER(d.firstName) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(d.lastName) LIKE LOWER(CONCAT('%', :name, '%')) ORDER BY d.lastName ASC")
+    List<kigali.clinic.rw.domain.Doctor> searchDoctorsByName(@Param("name") String name);
 
     @Query("""
         SELECT d
@@ -56,17 +49,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
         """)
     List<kigali.clinic.rw.domain.Doctor> findDoctorsWithoutOffice();
 
-    
     @Query("""
         SELECT DISTINCT a.patient
         FROM Appointment a
         WHERE a.doctor.id = :doctorId
         """)
-    List<kigali.clinic.rw.domain.Patient> findPatientsOfDoctor(
-            @Param("doctorId") UUID doctorId
-    );
+    List<kigali.clinic.rw.domain.Patient> findPatientsOfDoctor(@Param("doctorId") UUID doctorId);
 
-   
     @Query("""
         SELECT a.status, COUNT(a)
         FROM Appointment a
@@ -74,7 +63,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
         """)
     List<Object[]> countAppointmentsByStatus();
 
-    
     @Query("""
         SELECT a.patient
         FROM Appointment a
@@ -82,12 +70,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
         HAVING COUNT(a) >= :min
         ORDER BY COUNT(a) DESC
         """)
-    List<kigali.clinic.rw.domain.Patient> findFrequentPatients(
-            @Param("min") long min
-    );
-    List<Appointment> findByPatientSocialSecurityNumberAndAppointmentDateGreaterThanEqualAndStatusInOrderByAppointmentDateAsc(String ss, Date today, List<AppointmentStatus> statuses);
+    List<kigali.clinic.rw.domain.Patient> findFrequentPatients(@Param("min") long min);
 
-   
     @Query("""
         SELECT o.name, o.officeNumber, COUNT(a)
         FROM Office o
@@ -98,7 +82,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
         """)
     List<Object[]> findBusiestOffice();
 
-   
     @Modifying
     @Transactional
     @Query("""
@@ -108,14 +91,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
         AND a.appointmentDate = :date
         AND a.status <> kigali.clinic.rw.domain.AppointmentStatus.COMPLETED
         """)
-    int cancelAppointmentsForDoctorOnDate(
-            @Param("doctorId") UUID doctorId,
-            @Param("date") Date date
-    );
+    int cancelAppointmentsForDoctorOnDate(@Param("doctorId") UUID doctorId, @Param("date") Date date);
 
     Page<Appointment> findAll(Pageable pageable);
 
-    
     @Modifying
     @Transactional
     @Query("""
@@ -123,7 +102,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
         WHERE a.status = kigali.clinic.rw.domain.AppointmentStatus.CANCELLED
         AND a.appointmentDate < :date
         """)
-    int deleteCancelledBefore(
-            @Param("date") Date date
-    );
+    int deleteCancelledBefore(@Param("date") Date date);
 }

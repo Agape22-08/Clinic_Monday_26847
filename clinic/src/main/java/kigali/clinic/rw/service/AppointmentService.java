@@ -103,8 +103,7 @@ public String reschedule(UUID id, LocalDate newDate){
 }
 
     public List<Doctor> getDoctorsBySpecialization(String name) {
-
-        return appointmentRepo.findDoctorsBySpecialization(name);
+        return doctorRepo.findDoctorsBySpecialization(name);
     }
 
 
@@ -173,6 +172,23 @@ public String reschedule(UUID id, LocalDate newDate){
         return appointmentRepo.findById(id);
     }
 
+
+    public List<Appointment> getDoctorAgenda(UUID doctorId, Date date) {
+        return appointmentRepo.findByDoctorIdAndAppointmentDateAndStatusNotOrderByAppointmentDateAsc(doctorId, date, AppointmentStatus.CANCELLED);
+    }
+
+    public List<Appointment> getUpcomingAppointments(String ssNumber) {
+        return appointmentRepo.findByPatientSocialSecurityNumberAndAppointmentDateGreaterThanEqualAndStatusInOrderByAppointmentDateAsc(
+            ssNumber, Date.valueOf(LocalDate.now()), List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.CONFIRMED));
+    }
+
+    public List<Doctor> searchDoctorsByName(String name) {
+        return appointmentRepo.searchDoctorsByName(name);
+    }
+
+    public void deleteAppointment(UUID id) {
+        appointmentRepo.deleteById(id);
+    }
 
     public List<Appointment> getAllAppointments() {
 

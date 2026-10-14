@@ -38,7 +38,7 @@ public class OfficeController {
 
     @GetMapping(value = "/free")
     public ResponseEntity<?> freeOffices() {
-        return new ResponseEntity<>(offServe.getAllOffices(), HttpStatus.OK);
+        return new ResponseEntity<>(offServe.getFreeOffices(), HttpStatus.OK);
     }
 
     @org.springframework.web.bind.annotation.GetMapping(value = "/all")

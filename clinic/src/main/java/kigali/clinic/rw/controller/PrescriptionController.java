@@ -28,31 +28,42 @@ public class PrescriptionController {
 
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestParam UUID appointmentId, @RequestBody Prescription pres) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(prescriptionService.save(appointmentId, pres));
+        String msg = prescriptionService.save(appointmentId, pres);
+        if (msg.equals("Prescription saved successfully"))
+            return ResponseEntity.status(HttpStatus.CREATED).body(msg);
+        if (msg.equals("The appointment with that id does not exist"))
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
     }
 
     @GetMapping("/appointment/{appointmentId}")
     public ResponseEntity<?> byAppointment(@PathVariable UUID appointmentId) {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(prescriptionService.findByAppointmentId(appointmentId));
     }
 
     @GetMapping("/patient/{ssNumber}")
     public List<Prescription> byPatient(@PathVariable String ssNumber) {
-        return List.of();
+        return prescriptionService.findByPatientSsNumber(ssNumber);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable UUID id, @RequestBody Prescription pres) {
-        return ResponseEntity.ok(prescriptionService.update(id, pres));
+        String msg = prescriptionService.update(id, pres);
+        if (msg.equals("The prescription with that id does not exist"))
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+        return ResponseEntity.ok(msg);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable UUID id) {
-        return ResponseEntity.ok(prescriptionService.delete(id));
+        String msg = prescriptionService.delete(id);
+        if (msg.equals("The prescription with that id does not exist"))
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+        return ResponseEntity.ok(msg);
     }
 
     @GetMapping("/stats/top-medicines")
     public List<Object[]> top() {
-        return List.of();
+        return prescriptionService.findTopMedicines();
     }
 }

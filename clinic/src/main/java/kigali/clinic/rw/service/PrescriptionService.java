@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +22,18 @@ public class PrescriptionService {
     @Autowired
     private PrescriptionRepository prescriptionRepository;
 
+    public List<Prescription> findByAppointmentId(UUID appointmentId) {
+        return prescriptionRepository.findByAppointmentId(appointmentId);
+    }
+
+    public List<Prescription> findByPatientSsNumber(String ssNumber) {
+        return prescriptionRepository.findByPatientSsNumber(ssNumber);
+    }
+
+    public List<Object[]> findTopMedicines() {
+        return prescriptionRepository.findTopMedicines();
+    }
+
     public String save(UUID appointmentId, Prescription p){
         Optional<Appointment> opt = appointmentRepository.findById(appointmentId);
         if(opt.isEmpty()){
@@ -30,6 +43,7 @@ public class PrescriptionService {
         if(app.getStatus() != AppointmentStatus.COMPLETED){
             return "Prescriptions are only for COMPLETED appointments";
         }
+
         p.setId(UUID.randomUUID());
         p.setIssuedDate(LocalDate.now());
         p.setAppointment(app);
@@ -42,10 +56,16 @@ public class PrescriptionService {
         if(opt.isEmpty()){
             return "The prescription with that id does not exist";
         }
+
         Prescription existing = opt.get();
         existing.setMedicineName(updated.getMedicineName());
         existing.setDosage(updated.getDosage());
         existing.setDurationDays(updated.getDurationDays());
+
+        if(updated.getIssuedDate() != null){
+            existing.setIssuedDate(updated.getIssuedDate());
+        }
+
         prescriptionRepository.save(existing);
         return "Prescription updated successfully";
     }

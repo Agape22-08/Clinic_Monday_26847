@@ -1,5 +1,7 @@
 package kigali.clinic.rw.controller;
 
+import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,14 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kigali.clinic.rw.domain.Doctor;
+import kigali.clinic.rw.service.AppointmentService;
 import kigali.clinic.rw.service.DoctorService;
 
 @RestController
-@RequestMapping(value = "/api/doctor")
+@RequestMapping(value = "/api/doctors")
 public class DoctorController {
 
     @Autowired
     private DoctorService doctorServe;
+
+    @Autowired
+    private AppointmentService appointmentService;
 
     @PostMapping(value = "/save")
     public ResponseEntity<?> saveDoctor(@RequestBody Doctor doctor) {
@@ -115,5 +121,17 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(msg);
         }
         return ResponseEntity.ok(msg);
+    }
+
+    // D1
+    @GetMapping("/{doctorId}/agenda")
+    public ResponseEntity<?> getDoctorAgenda(@PathVariable UUID doctorId, @RequestParam String date) {
+        return ResponseEntity.ok(appointmentService.getDoctorAgenda(doctorId, Date.valueOf(date)));
+    }
+
+    // D3
+    @GetMapping("/search")
+    public ResponseEntity<?> searchDoctors(@RequestParam String name) {
+        return ResponseEntity.ok(appointmentService.searchDoctorsByName(name));
     }
 }

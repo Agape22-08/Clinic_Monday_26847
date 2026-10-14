@@ -21,6 +21,10 @@ public class OfficeService {
         return "Office is saved successfully";
     }
 
+    public java.util.List<Office> getFreeOffices() {
+        return offRepo.findFreeOffices();
+    }
+
     public java.util.List<Office> getAllOffices() {
 
         return offRepo.findAll();
