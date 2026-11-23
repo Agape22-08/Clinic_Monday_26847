@@ -34,8 +34,14 @@ public class OfficeService {
 
     
     public List<Office> getAllOffices(){
-
         return officeRepo.findAll();
+    }
+
+    public List<Office> searchOffices(String keyword){
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return officeRepo.findAll();
+        }
+        return officeRepo.searchByNameOrOfficeNumber(keyword.trim());
     }
 
 

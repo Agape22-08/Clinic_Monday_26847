@@ -21,6 +21,9 @@ public interface OfficeRepository extends  JpaRepository<Office,UUID >{
 
     Boolean existsByOfficeNumber(int officeNumber);
 
+    @Query("SELECT o FROM Office o WHERE LOWER(o.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR CAST(o.officeNumber AS string) LIKE CONCAT('%', :keyword, '%')")
+    List<Office> searchByNameOrOfficeNumber(@org.springframework.data.repository.query.Param("keyword") String keyword);
+
     @Query("SELECT o.name, o.officeNumber, COUNT(a) " +
        "FROM Appointment a " +
        "JOIN a.doctor d " +
